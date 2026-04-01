@@ -1,0 +1,40 @@
+name: Deploy Website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy to VPS
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.WEB_HOST }}
+          username: ${{ secrets.WEB_USER }}
+          key: ${{ secrets.WEB_SSH_KEY }}
+          script: |
+            set -e
+
+            echo "→ Pulling latest from GitHub..."
+            if [ ! -d /srv/cognipay-web ]; then
+              git clone https://github.com/elicona1/cognipay-website.git /srv/cognipay-web
+            else
+              cd /srv/cognipay-web && git pull origin main
+            fi
+
+            echo "→ Syncing to web root..."
+            cp /srv/cognipay-web/index.html /var/www/cognipay-web/index.html
+
+            echo "→ Verifying nginx is up..."
+            systemctl is-active nginx || systemctl start nginx
+
+            echo "✅ Deploy complete."
