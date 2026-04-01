@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CogniPay — Infraestructura de Pagos para Instituciones Financieras</title>
+  <meta name="description" content="CogniPay conecta, ejecuta y concilia las transacciones de tu institución financiera con los principales canales y procesadores del mercado mexicano." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#eff6ff',
+              100: '#dbeafe',
+              200: '#bfdbfe',
+              300: '#93c5fd',
+              400: '#60a5fa',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+              950: '#172554',
+            },
+          },
+          fontFamily: {
+            sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', 'sans-serif'],
+          },
+        },
+      },
+    }
+  </script>
+  <style>
+    /* Gradient text utility */
+    .gradient-text {
+      background: linear-gradient(135deg, #60a5fa 0%, #93c5fd 50%, #bfdbfe 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* Hero mesh gradient */
+    .hero-bg {
+      background-color: #0f172a;
+      background-image:
+        radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37,99,235,0.45) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 50%, rgba(29,78,216,0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 10% 80%, rgba(30,64,175,0.2) 0%, transparent 60%);
+    }
+
+    /* Grid pattern overlay */
+    .grid-pattern {
+      background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+
+    /* Glassmorphism card */
+    .glass-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+    }
+
+    /* Smooth scroll */
+    html { scroll-behavior: smooth; }
+
+    /* Nav transition */
+    #navbar {
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+    #navbar.scrolled {
+      background: rgba(255,255,255,0.97) !important;
+      box-shadow: 0 1px 0 0 rgba(0,0,0,0.08);
+    }
+    #navbar.scrolled .nav-logo { color: #1e3a8a; }
+    #navbar.scrolled .nav-link { color: #374151; }
+    #navbar.scrolled .nav-link:hover { color: #1d4ed8; }
+    #navbar.scrolled .nav-cta {
+      background: #1d4ed8;
+      color: white;
+    }
+
+    /* Fade-in on scroll */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Tab active */
+    .tab-btn.active {
+      background: #1d4ed8;
+      color: white;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: grid; }
+
+    /* Architecture diagram */
+    .arch-connector {
+      position: relative;
+    }
+    .arch-connector::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      bottom: -20px;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 20px;
+      background: linear-gradient(to bottom, #3b82f6, #1d4ed8);
+    }
+
+    /* Stats counter */
+    .stat-number {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Hover card lift */
+    .card-lift {
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(29,78,216,0.15);
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-900 antialiased">
+
+  <!-- ═══════════════════════════════════════════
+       NAVBAR
+  ═══════════════════════════════════════════ -->
+  <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <!-- Logo -->
+      <a href="#hero" class="nav-logo flex items-center gap-2 text-white font-bold text-xl tracking-tight">
+        <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
+          <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+        </div>
+        CogniPay
+      </a>
+
+      <!-- Desktop Links -->
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#nosotros"  class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Nosotros</a>
+        <a href="#valor"     class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Propuesta de Valor</a>
+        <a href="#plataforma" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Plataforma</a>
+        <a href="#servicios" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Servicios</a>
+        <a href="#tecnologia" class="nav-link text-sm text-slate-300 hover:text-white transition-colors">Tecnología</a>
+      </div>
+
+      <!-- CTA -->
+      <a href="#contacto" class="nav-cta hidden md:inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white text-sm font-medium px-4 py-2 rounded-lg border border-white/20 transition-all">
+        Solicitar Demo
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </a>
+
+      <!-- Mobile menu button -->
+      <button id="mobile-menu-btn" class="md:hidden text-white p-2">
+        <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div id="mobile-menu" class="hidden md:hidden mt-4 pb-4 border-t border-white/10">
+      <div class="flex flex-col gap-4 pt-4">
+        <a href="#nosotros"   class="text-slate-300 hover:text-white text-sm transition-colors">Nosotros</a>
+        <a href="#valor"      class="text-slate-300 hover:text-white text-sm transition-colors">Propuesta de Valor</a>
+        <a href="#plataforma" class="text-slate-300 hover:text-white text-sm transition-colors">Plataforma</a>
+        <a href="#servicios"  class="text-slate-300 hover:text-white text-sm transition-colors">Servicios</a>
+        <a href="#tecnologia" class="text-slate-300 hover:text-white text-sm transition-colors">Tecnología</a>
+        <a href="#contacto"   class="text-white bg-brand-700 text-sm font-medium px-4 py-2 rounded-lg text-center">Solicitar Demo</a>
+      </div>
+    </div>
+  </nav>
+
+
+  <!-- ═══════════════════════════════════════════
+       HERO
+  ═══════════════════════════════════════════ -->
+  <section id="hero" class="hero-bg grid-pattern min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 relative overflow-hidden">
+
+    <!-- Decorative blur blobs -->
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-80 h-80 bg-blue-400/8 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative max-w-5xl mx-auto">
+      <!-- Eyebrow badge -->
+      <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-medium px-4 py-1.5 rounded-full mb-8">
+        <span class="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse"></span>
+        Solución de Pagos · Mercado Mexicano
+      </div>
+
+      <!-- Main headline -->
+      <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight tracking-tight mb-6">
+        Infraestructura de pagos para
+        <span class="gradient-text"> instituciones financieras</span>
+      </h1>
+
+      <!-- Subheadline -->
+      <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10 leading-relaxed">
+        CogniPay conecta, ejecuta y concilia las transacciones de tu institución con los principales canales y procesadores del mercado mexicano — de forma segura, escalable y certificada PCI-DSS.
+      </p>
+
+      <!-- CTAs -->
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+        <a href="#contacto" class="w-full sm:w-auto bg-brand-600 hover:bg-brand-500 text-white font-semibold px-8 py-4 rounded-xl transition-all shadow-lg shadow-blue-900/40 flex items-center justify-center gap-2">
+          Solicitar Demo
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="#nosotros" class="w-full sm:w-auto border border-white/20 hover:border-white/40 text-white font-semibold px-8 py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+          Conocer más
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Stats strip -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/5 rounded-2xl overflow-hidden border border-white/10">
+        <div class="bg-white/[0.03] px-8 py-6 text-center">
+          <div class="stat-number text-4xl font-bold text-white mb-1">+20</div>
+          <div class="text-sm text-slate-400">años de experiencia<br/>en banca mexicana</div>
+        </div>
+        <div class="bg-white/[0.03] px-8 py-6 text-center border-t sm:border-t-0 sm:border-l sm:border-r border-white/5">
+          <div class="stat-number text-4xl font-bold text-white mb-1">1,000</div>
+          <div class="text-sm text-slate-400">TPS de capacidad<br/>de procesamiento</div>
+        </div>
+        <div class="bg-white/[0.03] px-8 py-6 text-center border-t sm:border-t-0">
+          <div class="stat-number text-4xl font-bold text-white mb-1">PCI-DSS</div>
+          <div class="text-sm text-slate-400">infraestructura<br/>certificable nivel 1</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll cue -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="w-5 h-5 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       NOSOTROS
+  ═══════════════════════════════════════════ -->
+  <section id="nosotros" class="py-24 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Text -->
+        <div class="fade-in">
+          <div class="inline-block text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full mb-4 tracking-wide uppercase">Quiénes Somos</div>
+          <h2 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">
+            Fundada por expertos en banca para el mercado financiero mexicano
+          </h2>
+          <p class="text-slate-500 text-lg leading-relaxed mb-8">
+            CogniPay nació en 2025 de la mano de un equipo con más de 20 años promedio de experiencia en el sector bancario de México y Latinoamérica. Nuestra razón de ser es simple: las instituciones financieras medianas y pequeñas merecen la misma infraestructura de pagos que los grandes bancos.
+          </p>
+          <a href="#contacto" class="inline-flex items-center gap-2 text-brand-700 font-semibold hover:text-brand-900 transition-colors group">
+            Habla con nuestro equipo
+            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </div>
+
+        <!-- Cards -->
+        <div class="fade-in flex flex-col gap-5">
+          <!-- Misión -->
+          <div class="rounded-2xl border border-brand-100 bg-brand-50 p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-brand-200/30 rounded-full -translate-y-8 translate-x-8 blur-2xl"></div>
+            <div class="relative">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-700 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+                  </svg>
+                </div>
+                <span class="font-semibold text-brand-900 text-sm uppercase tracking-wide">Misión</span>
+              </div>
+              <p class="text-slate-700 leading-relaxed text-sm">
+                "Brindar al sector de instituciones financieras mexicanas como cajas, sofomes, sofipos y similares, soluciones estandarizadas en cuanto a pagos y transacciones bancarias que les permitan crecer de manera sana y controlada."
+              </p>
+            </div>
+          </div>
+
+          <!-- Visión -->
+          <div class="rounded-2xl border border-slate-200 bg-slate-50 p-8 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-slate-200/40 rounded-full -translate-y-8 translate-x-8 blur-2xl"></div>
+            <div class="relative">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 rounded-lg bg-slate-700 flex items-center justify-center">
+                  <svg class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                  </svg>
+                </div>
+                <span class="font-semibold text-slate-800 text-sm uppercase tracking-wide">Visión</span>
+              </div>
+              <p class="text-slate-700 leading-relaxed text-sm">
+                "Convertirnos en el proveedor estándar de soluciones de pago del mercado mexicano."
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       PROPUESTA DE VALOR
+  ═══════════════════════════════════════════ -->
+  <section id="valor" class="py-24 px-6 bg-slate-50">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+        <div class="inline-block text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full mb-4 tracking-wide uppercase">Nuestra Oferta de Valor</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-4">
+          Todo lo que tu institución necesita para operar pagos
+        </h2>
+        <p class="text-slate-500 text-lg">Un ecosistema completo: desde la conexión con canales hasta el registro y administración de cada transacción.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+        <!-- Card: Conecta -->
+        <div class="card-lift bg-white rounded-2xl border border-slate-200 p-7 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-brand-700 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Conecta</h3>
+          <p class="text-slate-500 text-sm mb-4">Conectamos tu institución con todos los canales y procesadores del ecosistema.</p>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Corresponsales (OXXO, Paynet, Yastás)</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Cajeros y cajas en sucursal</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Apps móviles y portales web</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Procesadores de tarjetas y SPEI</li>
+          </ul>
+        </div>
+
+        <!-- Card: Ejecuta -->
+        <div class="card-lift bg-white rounded-2xl border border-slate-200 p-7 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-brand-800 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Ejecuta</h3>
+          <p class="text-slate-500 text-sm mb-4">Procesamos cada transacción con robustez, control y trazabilidad total.</p>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Configuración de red y cifrados</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Control de mensajería y reintentos</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Procesos de ejecución automatizados</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Monitoreo y alertas en tiempo real</li>
+          </ul>
+        </div>
+
+        <!-- Card: Registra -->
+        <div class="card-lift bg-white rounded-2xl border border-slate-200 p-7 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-slate-700 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Registra</h3>
+          <p class="text-slate-500 text-sm mb-4">Integramos y sincronizamos todos los registros con tus sistemas internos.</p>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Conexión a Core Bancario y CRM</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Bases de datos y sistemas de registro</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Conciliaciones y compensaciones</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Liquidaciones automáticas</li>
+          </ul>
+        </div>
+
+        <!-- Card: Administra -->
+        <div class="card-lift bg-white rounded-2xl border border-slate-200 p-7 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-slate-600 flex items-center justify-center mb-5">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2">Administra</h3>
+          <p class="text-slate-500 text-sm mb-4">Reportes, auditoría y control total de tu operación de pagos.</p>
+          <ul class="space-y-2 text-sm text-slate-600">
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Reportes estadísticos y de auditoría</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Seguridad y control de accesos</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Reportes de conciliación</li>
+            <li class="flex items-start gap-2"><span class="text-brand-500 mt-0.5">→</span> Compensaciones y liquidaciones</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       PLATAFORMA (Architecture)
+  ═══════════════════════════════════════════ -->
+  <section id="plataforma" class="py-24 px-6 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+        <div class="inline-block text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full mb-4 tracking-wide uppercase">Nuestra Plataforma</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-4">
+          Una arquitectura diseñada para la operación financiera de alto volumen
+        </h2>
+        <p class="text-slate-500 text-lg">
+          CogniPay se posiciona como la capa de ejecución entre tus canales de servicio, tus sistemas de registro y los procesadores del mercado.
+        </p>
+      </div>
+
+      <!-- Architecture Diagram -->
+      <div class="fade-in max-w-5xl mx-auto space-y-2">
+
+        <!-- Layer 1: Channels & Portals -->
+        <div class="arch-connector grid grid-cols-2 gap-2">
+          <div class="bg-brand-50 border border-brand-200 rounded-2xl p-6 text-center">
+            <div class="text-xs font-semibold text-brand-600 uppercase tracking-widest mb-2">Conexiones a Canales</div>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">Corresponsales</span>
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">Cajeros</span>
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">App Móvil</span>
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">Portales Web</span>
+            </div>
+          </div>
+          <div class="bg-brand-50 border border-brand-200 rounded-2xl p-6 text-center">
+            <div class="text-xs font-semibold text-brand-600 uppercase tracking-widest mb-2">Portales de Administración</div>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">SPEI</span>
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">Tarjetas</span>
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">Remesas</span>
+              <span class="bg-brand-100 text-brand-800 text-xs font-medium px-3 py-1 rounded-full">Reportes</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow down -->
+        <div class="flex items-center justify-center py-1">
+          <div class="flex flex-col items-center gap-0.5">
+            <div class="w-px h-4 bg-brand-300"></div>
+            <div class="text-xs text-slate-400 font-medium">TLS · VPN · Cifrado</div>
+            <div class="w-px h-4 bg-brand-300"></div>
+            <svg class="w-4 h-4 text-brand-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </div>
+        </div>
+
+        <!-- Layer 2: Execution (emphasized) -->
+        <div class="bg-brand-800 rounded-2xl p-8 text-center relative overflow-hidden">
+          <div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 24px 24px;"></div>
+          <div class="relative">
+            <div class="text-xs font-semibold text-brand-300 uppercase tracking-widest mb-3">Ejecución — CogniPay Core</div>
+            <div class="flex flex-wrap gap-2 justify-center mb-3">
+              <span class="bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/20">Procesos</span>
+              <span class="bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/20">Lógica de Negocio</span>
+              <span class="bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/20">Microservicios</span>
+              <span class="bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/20">Agentes IA</span>
+              <span class="bg-white/10 text-white text-xs font-medium px-3 py-1.5 rounded-full border border-white/20">Logs de Auditoría</span>
+            </div>
+            <div class="flex flex-wrap gap-2 justify-center">
+              <span class="bg-brand-600/50 text-brand-200 text-xs font-medium px-3 py-1.5 rounded-full">Procesos Batch</span>
+              <span class="bg-brand-600/50 text-brand-200 text-xs font-medium px-3 py-1.5 rounded-full">Conciliaciones</span>
+              <span class="bg-brand-600/50 text-brand-200 text-xs font-medium px-3 py-1.5 rounded-full">Compensaciones</span>
+              <span class="bg-brand-600/50 text-brand-200 text-xs font-medium px-3 py-1.5 rounded-full">Liquidaciones</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arrow down -->
+        <div class="flex items-center justify-center py-1">
+          <div class="flex flex-col items-center gap-0.5">
+            <div class="w-px h-4 bg-brand-300"></div>
+            <svg class="w-4 h-4 text-brand-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 3a1 1 0 01.707.293l3 3a1 1 0 01-1.414 1.414L10 5.414 7.707 7.707a1 1 0 01-1.414-1.414l3-3A1 1 0 0110 3zm-3.707 9.293a1 1 0 011.414 0L10 14.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+          </div>
+        </div>
+
+        <!-- Layer 3: Registry Systems -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-widest text-center mb-4">Sistemas de Registro</div>
+          <div class="grid grid-cols-2 md:grid-cols-5 gap-3 text-center">
+            <div class="bg-white border border-slate-200 rounded-xl p-3">
+              <div class="text-xs font-semibold text-slate-700">Core Bancario</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-3">
+              <div class="text-xs font-semibold text-slate-700">CRM</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-3">
+              <div class="text-xs font-semibold text-slate-700">Bases de Datos</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-3">
+              <div class="text-xs font-semibold text-slate-700">Reportes</div>
+            </div>
+            <div class="bg-white border border-slate-200 rounded-xl p-3 col-span-2 md:col-span-1">
+              <div class="text-xs font-semibold text-slate-700">Integraciones</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       SERVICIOS (Tabs)
+  ═══════════════════════════════════════════ -->
+  <section id="servicios" class="py-24 px-6 bg-slate-50">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center max-w-3xl mx-auto mb-12 fade-in">
+        <div class="inline-block text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full mb-4 tracking-wide uppercase">Servicios</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-4">
+          Soluciones especializadas para cada necesidad de pago
+        </h2>
+        <p class="text-slate-500 text-lg">Desde tarjetas hasta corresponsalía — cubrimos todos los canales de tu institución.</p>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="fade-in flex flex-wrap gap-2 justify-center mb-10">
+        <button onclick="switchTab('tarjetas')"   class="tab-btn active text-sm font-medium px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all" data-tab="tarjetas">💳 Tarjetas</button>
+        <button onclick="switchTab('spei')"        class="tab-btn text-sm font-medium px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all" data-tab="spei">🏦 SPEI & Pagos</button>
+        <button onclick="switchTab('corresponsales')" class="tab-btn text-sm font-medium px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all" data-tab="corresponsales">🏪 Corresponsales</button>
+        <button onclick="switchTab('app')"         class="tab-btn text-sm font-medium px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all" data-tab="app">📱 App Móvil</button>
+        <button onclick="switchTab('cajero')"      class="tab-btn text-sm font-medium px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all" data-tab="cajero">🏧 Cajero</button>
+        <button onclick="switchTab('sucursal')"    class="tab-btn text-sm font-medium px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all" data-tab="sucursal">🏢 Sucursal</button>
+        <button onclick="switchTab('callcenter')"  class="tab-btn text-sm font-medium px-4 py-2 rounded-xl border border-slate-200 bg-white text-slate-600 hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all" data-tab="callcenter">📞 Call Center</button>
+      </div>
+
+      <!-- Tab Panels -->
+      <div class="fade-in">
+
+        <!-- Tarjetas -->
+        <div id="tab-tarjetas" class="tab-panel active grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-7 lg:col-span-3">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Gestión completa del ciclo de vida de tarjetas</h3>
+            <p class="text-slate-500 text-sm mb-6">Soporte ISO8583 y API, compatible con infraestructura PCI-DSS. Cubrimos todas las operaciones desde asignación hasta estados de cuenta.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Asignación & Activación</div><p class="text-xs text-slate-500">Token con el front vía API e ISO8583. Activación con OTP.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">NIP & Bloqueo</div><p class="text-xs text-slate-500">Cambio de NIP con OTP. Bloqueo temporal o definitivo a nivel procesador.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">CVV & Tokenización</div><p class="text-xs text-slate-500">CVV dinámico y tokenización para wallets y comunicaciones internas.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Antifraude & Conciliación</div><p class="text-xs text-slate-500">Conexión a sistema de fraudes. Conciliación y estados de cuenta automáticos.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SPEI -->
+        <div id="tab-spei" class="tab-panel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-7 lg:col-span-3">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Procesamiento completo de transferencias SPEI</h3>
+            <p class="text-slate-500 text-sm mb-6">Múltiples canales de inicio y conciliación automática. Integración con los principales aplicativos del mercado.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Integración SPEI</div><p class="text-xs text-slate-500">Karpay, STP y otros. Conexión, cifrado y mensajería completa.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Canales de Inicio</div><p class="text-xs text-slate-500">App, portales, corresponsales. Proceso de remesas incluido.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Conciliaciones</div><p class="text-xs text-slate-500">Automáticas por canal. Reportes para compartir con contraparte.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Monitoreo</div><p class="text-xs text-slate-500">Administración de operaciones, alertas y reportes estadísticos.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Corresponsales -->
+        <div id="tab-corresponsales" class="tab-panel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-7 lg:col-span-3">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Integración nativa con las principales redes de corresponsalía</h3>
+            <p class="text-slate-500 text-sm mb-6">OXXO, Paynet y Yastás. Cobertura completa de operaciones con conciliación y compensación automática.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Redes</div><p class="text-xs text-slate-500">OXXO · Paynet · Yastás. Configuración de networking incluida.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Operaciones</div><p class="text-xs text-slate-500">Depósitos, retiros, pagos a crédito, consulta de saldo. Débito y crédito.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Tarjetas</div><p class="text-xs text-slate-500">Activación, renovación, cancelación, cambio de NIP, bloqueo bajo demanda.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Control</div><p class="text-xs text-slate-500">Conciliaciones, compensaciones, reportes, alertas y monitoreo transaccional.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- App Móvil -->
+        <div id="tab-app" class="tab-panel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-7 lg:col-span-3">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Pantallas y servicios listos para tu app o portal</h3>
+            <p class="text-slate-500 text-sm mb-6">APIs y componentes UI para integrar en tu aplicación móvil o portal web. Todo el ciclo de tarjeta y pagos cubierto.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Gestión de Tarjeta</div><p class="text-xs text-slate-500">Activación, bloqueo, renovación, cancelación. CVV dinámico y tarjeta virtual.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Pagos</div><p class="text-xs text-slate-500">Pagos a crédito desde cuenta. Cambio de NIP con OTP.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Remesas</div><p class="text-xs text-slate-500">Cobro de remesas integrado. Las consultas de saldo se asumen existentes.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cajero -->
+        <div id="tab-cajero" class="tab-panel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-7 lg:col-span-3">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Operaciones de tarjeta desde tu red de cajeros</h3>
+            <p class="text-slate-500 text-sm mb-6">Compatible con ISO8583. Operaciones esenciales del cliente desde el cajero automático.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Pagos</div><p class="text-xs text-slate-500">Pago de crédito con cargo a cuenta desde el cajero.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Seguridad</div><p class="text-xs text-slate-500">Cambio de NIP y bloqueo de tarjeta desde el dispositivo.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Compatibilidad</div><p class="text-xs text-slate-500">ISO8583 para cajeros y TPVs propias en sucursal y teller.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sucursal -->
+        <div id="tab-sucursal" class="tab-panel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-7 lg:col-span-3">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Herramientas para el ejecutivo de cuenta en ventanilla</h3>
+            <p class="text-slate-500 text-sm mb-6">Aplicativo de sucursal con todas las operaciones de tarjeta para el ejecutivo de cuenta.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Pagos</div><p class="text-xs text-slate-500">Pagos con cargo a cuenta desde la plataforma del ejecutivo.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">NIP</div><p class="text-xs text-slate-500">Cambio de NIP asistido desde ventanilla.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Bloqueo & Renovación</div><p class="text-xs text-slate-500">Bloqueo de tarjeta y solicitud de renovación.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Cancelación</div><p class="text-xs text-slate-500">Cancelación de tarjeta con confirmación del cliente.</p></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Call Center -->
+        <div id="tab-callcenter" class="tab-panel grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="bg-white rounded-2xl border border-slate-200 p-7 lg:col-span-3">
+            <h3 class="text-xl font-bold text-slate-900 mb-2">Operaciones autenticadas vía OTP para el ejecutivo telefónico</h3>
+            <p class="text-slate-500 text-sm mb-6">El call center opera con la misma seguridad que cualquier otro canal — autenticación OTP antes de toda operación sensible.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Autenticación</div><p class="text-xs text-slate-500">Verificación del cliente con OTP antes de operar.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Gestión de Tarjeta</div><p class="text-xs text-slate-500">Activación, cancelación, bloqueo, renovación desde el teléfono.</p></div>
+              <div class="bg-slate-50 rounded-xl p-4"><div class="text-xs font-semibold text-brand-700 mb-1">Seguridad Avanzada</div><p class="text-xs text-slate-500">Cambio de NIP y generación de tarjeta virtual con CVV dinámico.</p></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       ALCANCE TECNOLÓGICO
+  ═══════════════════════════════════════════ -->
+  <section id="tecnologia" class="py-24 px-6 bg-white">
+    <div class="max-w-7xl mx-auto">
+
+      <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+        <div class="inline-block text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full mb-4 tracking-wide uppercase">Alcance Tecnológico</div>
+        <h2 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-4">
+          Construido para escalar. Diseñado para durar.
+        </h2>
+        <p class="text-slate-500 text-lg">Open source, cloud-native y preparado para PCI-DSS desde el diseño.</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- Stack -->
+        <div class="card-lift bg-white rounded-2xl border border-slate-200 p-8 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-4">Stack Tecnológico</h3>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Software libre principalmente</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Python · Java · JavaScript / TypeScript</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Kubernetes como orquestador principal</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Kafka para serialización y alta concurrencia</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Grafana para monitoreo y observabilidad</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Ambientes de desarrollo y QA incluidos</li>
+          </ul>
+        </div>
+
+        <!-- Escalamiento -->
+        <div class="card-lift bg-brand-800 rounded-2xl p-8 fade-in text-white relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-48 h-48 bg-brand-600/30 rounded-full -translate-y-12 translate-x-12 blur-2xl"></div>
+          <div class="relative">
+            <div class="w-12 h-12 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center mb-6">
+              <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <h3 class="text-xl font-bold mb-4">Escalamiento</h3>
+            <ul class="space-y-3 text-sm text-brand-200">
+              <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0"></div>Escalamiento automático de CPU y memoria</li>
+              <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0"></div>Hasta <strong class="text-white">1,000 TPS</strong> de transacciones concurrentes</li>
+              <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0"></div>Serialización de llamados con streaming</li>
+              <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0"></div>Batch sin impacto en performance</li>
+              <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0"></div>Despliegue en GCP, AWS u on-premises</li>
+              <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-400 flex-shrink-0"></div>Redes segmentadas e infraestructura auto-escalable</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Seguridad -->
+        <div class="card-lift bg-white rounded-2xl border border-slate-200 p-8 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-brand-700 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-4">Seguridad</h3>
+          <ul class="space-y-3 text-sm text-slate-600">
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Infraestructura en nube pública segmentada</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Bóveda PCI-DSS Compliant (criptoseguridad)</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Cifrado de canal y de mensajes</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>VPNs hacia institución financiera o terceros</li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Compatible con certificación <strong>PCI-DSS Nivel 1</strong></li>
+            <li class="flex items-center gap-3"><div class="w-1.5 h-1.5 rounded-full bg-brand-500 flex-shrink-0"></div>Canales cifrados y base de datos encriptada</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       IA & INNOVACIÓN
+  ═══════════════════════════════════════════ -->
+  <section id="ia" class="py-24 px-6 relative overflow-hidden" style="background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #1e40af 100%);">
+    <div class="absolute inset-0 opacity-5" style="background-image: linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px); background-size: 48px 48px;"></div>
+    <div class="absolute top-0 left-1/3 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="relative max-w-7xl mx-auto">
+
+      <div class="text-center max-w-3xl mx-auto mb-16 fade-in">
+        <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-400/20 text-blue-300 text-xs font-medium px-4 py-1.5 rounded-full mb-6">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 20 20"><path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3zM6 8a2 2 0 11-4 0 2 2 0 014 0zM16 18v-3a5.972 5.972 0 00-.75-2.906A3.005 3.005 0 0119 15v3h-3zM4.75 12.094A5.973 5.973 0 004 15v3H1v-3a3 3 0 013.75-2.906z"/></svg>
+          Inteligencia Artificial
+        </div>
+        <h2 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
+          IA integrada en el corazón de la operación
+        </h2>
+        <p class="text-slate-400 text-lg">
+          Usamos modelos de IA — desde locales básicos hasta las últimas versiones disponibles — adaptados al presupuesto y necesidad de cada institución.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- IA Conciliación -->
+        <div class="glass-card rounded-2xl p-8 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-brand-600/40 border border-brand-400/30 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">IA en Conciliación</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Automatización inteligente del proceso de conciliación de transacciones, reduciendo errores manuales y tiempos de cierre operativo.
+          </p>
+        </div>
+
+        <!-- IA Fraude -->
+        <div class="glass-card rounded-2xl p-8 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-brand-600/40 border border-brand-400/30 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.618 5.984A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016zM12 9v2m0 4h.01" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">IA en Prevención de Fraude</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Detección proactiva de transacciones sospechosas mediante modelos de políticas adaptativas que aprenden del comportamiento de cada institución.
+          </p>
+        </div>
+
+        <!-- IA Canales -->
+        <div class="glass-card rounded-2xl p-8 fade-in">
+          <div class="w-12 h-12 rounded-xl bg-brand-600/40 border border-brand-400/30 flex items-center justify-center mb-6">
+            <svg class="w-6 h-6 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-3">IA en Configuración de Canales</h3>
+          <p class="text-slate-400 text-sm leading-relaxed">
+            Asistencia inteligente para la configuración óptima de canales de pago, reduciendo tiempos de integración y errores de configuración.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       CONTACTO CTA
+  ═══════════════════════════════════════════ -->
+  <section id="contacto" class="py-24 px-6 bg-slate-50">
+    <div class="max-w-4xl mx-auto text-center fade-in">
+      <div class="inline-block text-xs font-semibold text-brand-700 bg-brand-50 border border-brand-200 px-3 py-1 rounded-full mb-6 tracking-wide uppercase">Contacto</div>
+      <h2 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight mb-6">
+        ¿Listo para modernizar los pagos de tu institución?
+      </h2>
+      <p class="text-slate-500 text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+        Habla con nuestro equipo y descubre cómo CogniPay puede transformar tu operación de pagos.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="mailto:contacto@cognipay.mx" class="w-full sm:w-auto bg-brand-700 hover:bg-brand-800 text-white font-semibold px-10 py-4 rounded-xl transition-all shadow-lg shadow-blue-900/20 flex items-center justify-center gap-2">
+          Solicitar Demo
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+          </svg>
+        </a>
+        <a href="mailto:contacto@cognipay.mx" class="w-full sm:w-auto border border-slate-300 hover:border-brand-400 text-slate-700 hover:text-brand-700 font-semibold px-10 py-4 rounded-xl transition-all flex items-center justify-center gap-2">
+          <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          contacto@cognipay.mx
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ═══════════════════════════════════════════
+       FOOTER
+  ═══════════════════════════════════════════ -->
+  <footer class="bg-slate-900 text-slate-400 px-6 pt-16 pb-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-slate-800">
+
+        <!-- Brand -->
+        <div class="md:col-span-2">
+          <div class="flex items-center gap-2 text-white font-bold text-xl mb-4">
+            <div class="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center">
+              <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            CogniPay
+          </div>
+          <p class="text-sm text-slate-400 leading-relaxed max-w-sm">
+            El estándar de pagos para instituciones financieras mexicanas. Conectamos, ejecutamos y conciliamos tu operación.
+          </p>
+        </div>
+
+        <!-- Nav links -->
+        <div>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">Plataforma</div>
+          <ul class="space-y-3 text-sm">
+            <li><a href="#nosotros"   class="hover:text-white transition-colors">Nosotros</a></li>
+            <li><a href="#valor"      class="hover:text-white transition-colors">Propuesta de Valor</a></li>
+            <li><a href="#plataforma" class="hover:text-white transition-colors">Plataforma</a></li>
+            <li><a href="#servicios"  class="hover:text-white transition-colors">Servicios</a></li>
+            <li><a href="#tecnologia" class="hover:text-white transition-colors">Tecnología</a></li>
+            <li><a href="#ia"         class="hover:text-white transition-colors">IA & Innovación</a></li>
+          </ul>
+        </div>
+
+        <!-- Contact -->
+        <div>
+          <div class="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-4">Contacto</div>
+          <ul class="space-y-3 text-sm">
+            <li><a href="mailto:contacto@cognipay.mx" class="hover:text-white transition-colors">contacto@cognipay.mx</a></li>
+            <li><a href="#contacto" class="hover:text-white transition-colors">Solicitar Demo</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-600">
+        <div>© 2025 CogniPay. Todos los derechos reservados.</div>
+        <div class="flex items-center gap-1">
+          <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
+          Infraestructura PCI-DSS · México
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ═══════════════════════════════════════════
+       JAVASCRIPT
+  ═══════════════════════════════════════════ -->
+  <script>
+    // ── Navbar scroll effect ──────────────────
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // ── Mobile menu ───────────────────────────
+    const mobileBtn  = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+    // Close on link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+    });
+
+    // ── Fade-in on scroll ─────────────────────
+    const fadeEls = document.querySelectorAll('.fade-in');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    fadeEls.forEach(el => observer.observe(el));
+
+    // ── Tab switcher ──────────────────────────
+    function switchTab(tabId) {
+      // Deactivate all
+      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+
+      // Activate selected
+      document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+      document.getElementById(`tab-${tabId}`).classList.add('active');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,504 @@
+Solución de Pagos
+
+Cognipay
+• Cognipay fue fundada en 2025 por un grupo de profesionales con alta experiencia en banca con la siguiente
+misión y visión.
+
+• Misión: “Brindar al sector de instituciones financieras mexicanas como cajas, sofomes, sofipos y similares,
+soluciones estandarizadas en cuanto a pagos y transacciones bancarias que les permitan crecer de manera sana y
+controlada”
+
+• Visión: “ Convertirnos en el proveedor estándar de soluciones de pago del mercado mexicano”
+
+• Nuestro equipo cuenta en promedio con más de 20 años de experiencia en el sector bancario mexicano y de
+latinoamerica.
+
+Cognipay
+
+Conecta
+
+Instituciones
+financieras
+
+Ejecuta
+Registra
+
+CRM
+
+Corresponsales
+
+Administra
+
+ERP
+Core
+
+SPEI
+
+Transacciones de
+Entrada y Salida
+
+Concilia
+Compensa
+Contabiliza
+Cobra
+Paga
+
+Transacciones de
+Entrada y Salida
+
+Tarjetas
+Protocolos
+Seguridad
+Core
+
+Nuestra Oferta de Valor
+
+Conecta
+
+Ejecuta
+
+Registra
+
+Administra
+
+Conexión a canales de
+servicio como:
+Corresponsales Cajeros,
+Cajas en sucursal,
+Aplicaciónes Móviles,
+Portales tanto internos como
+externos.
+
+Configuración de Red
+
+Conexión a sistemas de
+registro
+
+Reportes estadisticos
+
+Conexión a procesadores: De
+tarjetas, SPEI, remesas
+
+Configuración de cifrados
+
+Bases de datos
+
+Armado de mensajes
+
+Control de Mensajeria,
+reintentos, recuperación de
+errores etc.
+Armado de procesos de
+ejecución.
+Monitoreo
+
+Alertas
+
+Seguridad
+
+Core Bancario
+
+CRM
+
+Reportes auditoria
+Conciliaciones
+
+Compensaciones
+Liquidaciones
+
+Nuestro proyecto de plataforma
+Conexiones a Canales
+
+Portales de Administración
+Conexión segura
+TLS, VPN, Cifrado
+
+Conexión segura
+TLS, VPN, Cifrado
+
+Ejecución
+Procesos – Lógica de Negocio – Microservicios – Agentes – Logs de Auditoria
+
+Procesos
+Procesos Batch – Conciliaciones – Compensaciones – Liquidaciones.
+
+Sistemas de Registro Internos
+
+Reportes
+
+Integraciones a sistemas de registro
+
+Bases de datos
+
+Core
+
+CRM
+
+Soporte de Tarjetas
+Asignación
+
+Comunicación con el procesador para la asignación de tarjetas, usando token con el front. Tanto via api
+como via ISO8583
+
+Activación
+
+Activación de tarjeta con OTP
+
+Cambio de NIP
+
+Cambio de NIP, con OTP y tanto en ISO8583 como en API.
+
+Bloqueo bajo
+demanda
+
+Bloqueo temporal o definitivo de la tarjeta a nivel procesador. Via ISO o via API
+
+CVV Dinámico
+
+CVV dinámico si es soportado por el procesador.
+
+Tokenización
+
+Tokenización interna para comunicaciones internas y a través del procesador para wallets.
+
+Tarjeta Virtual
+
+Creación, Bloqueo, Cancelación si es soportado con el procesador.
+
+Autorización
+De cargos
+
+Autorización de cargos desde el procesador, con reglas de validación de montos y horarios.
+
+Conexión a
+sistema de fraudes
+Conciliación
+
+Estados de cuenta
+
+Conexión al sistema de fraudes para bloqueo de transacciones.
+Conciliación con procesador en caso de ser necesario para estadistica, estados de cuenta o reporteo.
+
+Generación de estados de cuenta y timbrado en caso de no ser soportado por el procesador.
+
+Soporte de Pagos
+SPEI
+
+Canales de inicio:
+App-Portales
+
+Aplicativo karpay, stp,
+etc.
+
+Corresponsales
+
+Remesas
+
+Conexión, cifrado, mensajeria
+
+Proceso de corresponsalia
+
+Proceso de SPEI
+
+Reportes
+
+Conciliaciones
+
+Conciliaciones
+
+Proceso de Remesas
+
+Administración
+
+Conciliación
+
+Conciliación de todos los canales, con archivos de conciliación con acciones respectivas, como
+ejecución, inactivación o eliminación de registros en el core bancario.
+Reportes de conciliación con el resultado para compartir con la contraparte en caso de ser necesario.
+
+Reportes
+
+Conciliación de todos los canales, con archivos de conciliación con acciones respectivas, como
+ejecución, inactivación o eliminación de registros en el core bancario.
+
+Reportes de conciliación con el resultado para compartir con la contraparte en caso de ser necesario.
+
+Monitoreo
+
+Alertas
+
+Monitoreo en linea que permite la busqueda y administración efectiva de logs. Rotación y almacenaje.
+
+Alertas que permitan disparar acciones y alertar al operador.
+
+Alcance Tarjetas
+•
+
+Tener una infraestructura compatible con PCI.
+•
+
+Canales cifrados
+
+•
+
+Cifrado en base de datos
+
+•
+
+Boveda PCI Compliant
+
+•
+
+Compatible con ISO8583 para cajeros y TPVs propias
+en sucursal y teller
+
+Alcance Corresponsales
+•
+
+Integración con OXXO
+
+•
+
+Integración con Paynet
+
+•
+
+Integración con Yastás
+
+•
+
+Configuración de networking
+
+•
+
+Recepción de depositos
+
+•
+
+Soporte para Debito y Crédito
+
+•
+
+Recepción de retiros
+
+•
+
+Monitoreo transaccional
+
+•
+
+Recepción de pagos a crédito
+
+•
+
+Conciliaciones
+
+•
+
+Consulta de saldo
+
+•
+
+Compensaciones.
+
+•
+
+Procesos operativos
+
+•
+
+Procesos operativos: Activación, Renovación,
+Cancelación, Cambio de NIP, Bloqueo bajo demanda,
+CVV dimámico.
+
+•
+
+Alertas y Monitoreo
+
+•
+
+•
+
+Conciliaciones
+
+•
+
+Compensaciones
+
+•
+
+Reportes
+
+Alertas y monitoreo
+
+Alcance Cajero
+Desde el cajero, permitir:
+
+•
+
+Realizar pago de crédito con cargo a cuenta
+
+•
+•
+
+Alcance Sucursal
+Desde la plataforma de Ejecutivo de cuenta o aplicativo en
+sucursal:
+•
+
+Permitir realizar pagos con cargo a cuenta
+
+Realizar cambio de nip
+
+•
+
+Permitir realizar cambio de NIP
+
+Bloquear la tarjeta
+
+•
+
+Permitir bloquear tarjeta
+
+•
+
+Permitir solicitar renovación
+
+•
+
+Permitir cancelar tarjeta
+
+Alcance App Movil y Web
+Desde el app movil pantallas y servicios para
+•
+
+•
+
+Administración de tarjeta :
+
+Desde la plataforma de Call Center
+•
+
+El ejecutivo de call center podrá autenticar al cliente con
+OTP
+
+•
+
+Activar la tarjeta
+
+•
+
+Cancelar la tarjeta
+
+•
+
+Realizar cambio de NIP con el OTP
+
+•
+
+Solicitar renovación
+
+•
+
+Bloquear Tarjeta
+
+•
+
+Bloquear tarjeta
+
+•
+
+Cancelar Tarjeta
+
+•
+
+Generar tarea virtual con cvv dinámica.
+
+•
+
+Solicitar Renovación
+
+•
+
+Activar tarjeta con OTP
+
+Pantalla de pagos
+•
+
+•
+
+Alcance Call Center
+
+Pago a crédito desde cuenta
+
+Remesas
+•
+
+Cobro de Remesas
+
+(las consultas se asume que ya existen)
+
+Diseño de Software
+AI
+-Uso de IA en conciliación
+
+-Uso de IA en prevención de fraude y manejo de políticas
+
+Caracteristicas tarjetas
+-Manejo de tokenización de tarjetas
+
+-Todas las transacciones necesarias para el manejo y administración
+de tarjetas.
+
+-Uso de IA en configuración de canales.
+-Uso de modelos de acuerdo al pricing, desde locales en forma más
+básica hasta sus ultimas versiones disponibles.
+
+Escalamiento
+
+Seguridad
+
+-Escalamiento automatico en CPU, Memoria,
+
+-Infraestructura en nube pública
+
+-Transacciones concurrentes hasta llegar a 1000 TPS
+
+-Boveda para criptoseguridad
+
+-Serialización de transacciones usando plataformas de streaming
+
+-Encriptación de canal, encriptación de mensajes.
+
+-Soporte de transacciones por batch sin afectar el performance.
+
+-VPNs hacia institución financiera o terceros
+
+Alcance tecnológico
+Infraestructura
+
+Stack Tecnológico
+
+-Posibilidad de desplegar en la nube (GCP o AWS y on premises
+(dependiendo de la necesidad)
+
+-Software libre principalmente
+
+-Seguridad suficiente para aprobar una certificación PCI-DSS nivel 1
+
+-Codigo en python, java, javascript o typescript.
+
+-Infraestructura auto escalable.
+
+-Serializar llamados para soportar concurrencia en
+alto volumen con kafka
+
+-Usar kubernetes en la medida de lo posible.
+
+-Monitoreo con Grafana
+
+-Segmentar las redes
+
+-Proveer ambientes de desarrollo y QA.
+
+
